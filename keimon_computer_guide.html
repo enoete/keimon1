@@ -1,0 +1,1941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keimon's Computer Adventure 🌟</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+
+  :root {
+    --coral: #FF6B6B;
+    --sunshine: #FFD93D;
+    --mint: #6BCB77;
+    --sky: #4D96FF;
+    --lavender: #C77DFF;
+    --peach: #FFB347;
+    --rose: #FF8FAB;
+    --teal: #0BD3B1;
+    --dark: #2D2D2D;
+    --cream: #FFF9F0;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ===== HEADER ===== */
+  .hero {
+    background: linear-gradient(135deg, #FF6B6B, #FFD93D, #6BCB77, #4D96FF, #C77DFF);
+    background-size: 400% 400%;
+    animation: gradientFlow 8s ease infinite;
+    padding: 50px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "✨🌟💫⭐🌈";
+    font-size: 2rem;
+    position: absolute;
+    top: 10px; left: 0; right: 0;
+    letter-spacing: 30px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes gradientFlow {
+    0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
+  }
+  @keyframes float {
+    0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)}
+  }
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: white;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+  }
+  .hero p {
+    font-size: 1.2rem;
+    color: white;
+    font-weight: 700;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  }
+
+  /* ===== NAV ===== */
+  .nav-bar {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: var(--sky);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
+  .nav-btn.active { background: var(--coral); }
+
+  /* ===== SECTIONS ===== */
+  .section {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    animation: fadeIn 0.4s ease;
+  }
+  .section.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ===== STORY CARD ===== */
+  .story-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    border-left: 6px solid var(--coral);
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 80px; height: 80px;
+    background: var(--sunshine);
+    opacity: 0.15;
+    border-radius: 50%;
+    transform: translate(20px, -20px);
+  }
+  .story-card.mint { border-left-color: var(--mint); }
+  .story-card.sky { border-left-color: var(--sky); }
+  .story-card.lavender { border-left-color: var(--lavender); }
+  .story-card.peach { border-left-color: var(--peach); }
+  .story-card.teal { border-left-color: var(--teal); }
+
+  .story-card h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .story-card p { line-height: 1.8; margin-bottom: 12px; font-size: 1rem; }
+  .story-card p:last-child { margin-bottom: 0; }
+
+  /* ===== HIGHLIGHT BOX ===== */
+  .highlight-box {
+    background: linear-gradient(135deg, var(--sunshine), #FFE9A0);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px 0;
+    font-weight: 700;
+    font-size: 1rem;
+    border: 2px dashed var(--peach);
+  }
+  .highlight-box.mint { background: linear-gradient(135deg, #C8F5D0, #E8FCF0); border-color: var(--mint); }
+  .highlight-box.sky { background: linear-gradient(135deg, #C8DEFF, #E8F1FF); border-color: var(--sky); }
+  .highlight-box.lavender { background: linear-gradient(135deg, #EDD6FF, #F7EEFF); border-color: var(--lavender); }
+  .highlight-box.coral { background: linear-gradient(135deg, #FFD6D6, #FFEEEE); border-color: var(--coral); }
+
+  /* ===== CHARACTER BUBBLES ===== */
+  .character-bubble {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  }
+  .character-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    border: 3px solid white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  .character-bubble .bubble-text { flex: 1; }
+  .character-bubble .bubble-name {
+    font-weight: 900;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+  }
+  .character-bubble .bubble-text p { font-size: 0.95rem; line-height: 1.7; }
+
+  /* ===== COMPARISON TABLE ===== */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin: 15px 0;
+  }
+  .compare-table th {
+    background: var(--sky);
+    color: white;
+    padding: 15px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    text-align: left;
+  }
+  .compare-table th:first-child { background: var(--coral); }
+  .compare-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .compare-table tr:nth-child(even) td { background: #f9f9f9; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 800; background: #FFF3F3 !important; }
+
+  /* ===== GENERATION TIMELINE ===== */
+  .timeline {
+    position: relative;
+    padding: 10px 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0; bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--coral), var(--lavender));
+    border-radius: 2px;
+  }
+  .timeline-item {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    position: relative;
+  }
+  .timeline-dot {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    z-index: 1;
+    border: 4px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+  .timeline-content {
+    background: white;
+    border-radius: 15px;
+    padding: 18px;
+    flex: 1;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+  }
+  .timeline-content h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+  .timeline-content p { font-size: 0.9rem; line-height: 1.7; }
+
+  /* ===== FLIP CARDS ===== */
+  .flip-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin: 15px 0;
+  }
+  .flip-card {
+    perspective: 1000px;
+    height: 150px;
+    cursor: pointer;
+  }
+  .flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+  .flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    text-align: center;
+    font-weight: 700;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  .flip-card-front {
+    background: linear-gradient(135deg, var(--sky), var(--lavender));
+    color: white;
+    font-size: 1rem;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .flip-card-front .card-emoji { font-size: 2rem; }
+  .flip-card-back {
+    background: white;
+    transform: rotateY(180deg);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    border: 3px solid var(--mint);
+    color: var(--dark);
+  }
+  .flip-hint {
+    text-align: center;
+    color: #888;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  /* ===== QUIZ SECTION ===== */
+  .quiz-container {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+  }
+  .quiz-header {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.8rem;
+    text-align: center;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--coral), var(--lavender));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .quiz-subtitle {
+    text-align: center;
+    color: #888;
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+  }
+  .progress-bar-wrap {
+    background: #f0f0f0;
+    border-radius: 10px;
+    height: 12px;
+    margin-bottom: 25px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--coral), var(--lavender));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+  .q-block {
+    background: #FAFAFA;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .q-block.answered.correct { border-color: var(--mint); background: #F0FFF4; }
+  .q-block.answered.incorrect { border-color: var(--coral); background: #FFF5F5; }
+  .q-number {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--lavender);
+    margin-bottom: 10px;
+  }
+  .q-text {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  /* Multiple choice */
+  .mc-options { display: flex; flex-direction: column; gap: 10px; }
+  .mc-btn {
+    background: white;
+    border: 2px solid #E0E0E0;
+    border-radius: 10px;
+    padding: 12px 16px;
+    text-align: left;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mc-btn:hover:not([disabled]) { border-color: var(--sky); background: #F0F7FF; transform: translateX(4px); }
+  .mc-btn.selected-correct { border-color: var(--mint); background: #EDFFF2; color: #1a7a35; }
+  .mc-btn.selected-wrong { border-color: var(--coral); background: #FFF0F0; color: #c0392b; }
+  .mc-btn.show-correct { border-color: var(--mint); background: #EDFFF2; }
+  .mc-btn[disabled] { cursor: not-allowed; opacity: 0.75; }
+
+  /* True/False */
+  .tf-options { display: flex; gap: 15px; }
+  .tf-btn {
+    flex: 1;
+    padding: 15px;
+    border-radius: 12px;
+    border: 3px solid #E0E0E0;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+  }
+  .tf-btn.true-btn:hover:not([disabled]) { border-color: var(--mint); background: #EDFFF2; }
+  .tf-btn.false-btn:hover:not([disabled]) { border-color: var(--coral); background: #FFF0F0; }
+  .tf-btn.selected-correct { border-color: var(--mint) !important; background: #EDFFF2 !important; }
+  .tf-btn.selected-wrong { border-color: var(--coral) !important; background: #FFF0F0 !important; }
+  .tf-btn[disabled] { cursor: not-allowed; }
+
+  /* Matching */
+  .match-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+  .match-col h4 { font-weight: 800; margin-bottom: 10px; color: var(--sky); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+  .match-item {
+    background: white;
+    border: 2px solid #E0E0E0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .match-item:hover { border-color: var(--sky); background: #F0F7FF; }
+  .match-item.selected-left { border-color: var(--sky); background: #E8F0FF; }
+  .match-item.matched { border-color: var(--mint); background: #EDFFF2; cursor: default; }
+  .match-item.wrong { border-color: var(--coral); background: #FFF0F0; animation: shake 0.4s; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+
+  /* Fill-in (dropdown style) */
+  .fill-select {
+    background: white;
+    border: 2px solid var(--sky);
+    border-radius: 8px;
+    padding: 5px 10px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--dark);
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 4px;
+  }
+  .fill-select.correct { border-color: var(--mint); background: #EDFFF2; }
+  .fill-select.incorrect { border-color: var(--coral); background: #FFF0F0; }
+
+  /* Feedback */
+  .q-feedback {
+    display: none;
+    margin-top: 15px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+  .q-feedback.correct { display: block; background: #EDFFF2; color: #1a7a35; border-left: 4px solid var(--mint); }
+  .q-feedback.incorrect { display: block; background: #FFF0F0; color: #c0392b; border-left: 4px solid var(--coral); }
+
+  /* Quiz submit */
+  .quiz-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--coral), var(--lavender));
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 20px;
+    letter-spacing: 1px;
+  }
+  .quiz-submit-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+  /* Score board */
+  .score-board {
+    display: none;
+    background: linear-gradient(135deg, var(--sky), var(--lavender));
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+  }
+  .score-board h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  .score-board .score-num {
+    font-family: 'Fredoka One', cursive;
+    font-size: 5rem;
+    line-height: 1;
+  }
+  .score-board .score-msg { font-size: 1.2rem; margin-top: 15px; font-weight: 700; }
+  .retry-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 15px 40px;
+    background: white;
+    color: var(--lavender);
+    border: none;
+    border-radius: 30px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .retry-btn:hover { transform: scale(1.05); }
+
+  /* ===== MISC ===== */
+  .section-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    position: relative;
+  }
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--coral), var(--sunshine));
+    border-radius: 2px;
+    margin: 8px auto 0;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--coral);
+    color: white;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .badge.mint { background: var(--mint); }
+  .badge.sky { background: var(--sky); }
+  .badge.lavender { background: var(--lavender); }
+  .badge.peach { background: var(--peach); }
+
+  .fun-fact {
+    background: linear-gradient(135deg, #FF6B6B20, #FFD93D20);
+    border: 2px solid var(--sunshine);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+  .fun-fact::before { content: "💡 "; font-size: 1.2rem; }
+
+  .computer-types-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+  }
+  .computer-type-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+    transition: transform 0.2s;
+    cursor: default;
+  }
+  .computer-type-card:hover { transform: translateY(-5px); }
+  .computer-type-card .icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .computer-type-card h4 { font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; }
+  .computer-type-card p { font-size: 0.8rem; color: #666; line-height: 1.5; }
+
+  @media(max-width: 600px) {
+    .match-container { grid-template-columns: 1fr; }
+    .timeline::before { display: none; }
+    .tf-options { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🌟 Keimon's Computer Adventure! 🌟</h1>
+  <p>From Classroom to Computer Lab — You've Got This, Teacher Keimon! 🎉</p>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showSection('intro')">🏠 Intro</button>
+  <button class="nav-btn" onclick="showSection('ict')">📡 ICT & Computers</button>
+  <button class="nav-btn" onclick="showSection('generations')">⏳ Generations</button>
+  <button class="nav-btn" onclick="showSection('software')">💿 Software</button>
+  <button class="nav-btn" onclick="showSection('os')">🖥️ Operating System</button>
+  <button class="nav-btn" onclick="showSection('windows')">🪟 Windows 10</button>
+  <button class="nav-btn" onclick="showSection('quiz')">🎯 Big Quiz!</button>
+</div>
+
+<!-- ==================== INTRO ==================== -->
+<div id="intro" class="section active">
+  <div class="section-title">Welcome, Teacher Keimon! 👋</div>
+
+  <div class="story-card">
+    <h2>📖 Your Computer Story Begins Here</h2>
+    <p>Remember little <strong>Adiaha</strong> at 3 months old? She couldn't talk, couldn't walk — but she <em>learned everything</em> through touching, watching, and interacting with the world around her. Computers are the same way, Keimon. They start as blank slates that need instructions to do <em>anything</em>. And just like Adiaha grew into a Junior Calypso Monarch 👑, computers grew from room-sized machines to the smartphone in your pocket!</p>
+    <p>This guide is made just for <strong>YOU</strong>, using the things you know best — children, teaching, and love — to help every concept click. Let's go on this adventure together! 🚀</p>
+  </div>
+
+  <div class="highlight-box">
+    🗺️ <strong>What You'll Learn in This Guide:</strong><br><br>
+    ✅ What a computer IS and where they came from<br>
+    ✅ The different types and sizes of computers<br>
+    ✅ Software: the brain of the computer<br>
+    ✅ Operating Systems: the classroom manager<br>
+    ✅ How to navigate Windows 10<br>
+    ✅ A BIG quiz to test everything you learned!
+  </div>
+
+  <div class="character-bubble">
+    <div class="character-avatar" style="background:#FFD93D;">👶</div>
+    <div class="bubble-text">
+      <div class="bubble-name" style="color:#d4a000;">Adiaha says...</div>
+      <p>"Miss Keimon, learning computers is just like learning to read — confusing at first, but then it becomes your superpower! You taught me everything. Now it's your turn to learn something new!" 💛</p>
+    </div>
+  </div>
+
+  <div class="character-bubble">
+    <div class="character-avatar" style="background:#6BCB77;">👴</div>
+    <div class="bubble-text">
+      <div class="bubble-name" style="color:#2a7a3a;">Oma Lu says...</div>
+      <p>"Chile, in my day we didn't have all these fancy machines. But Oma Lu's been watching, and I'll tell you — a computer is just like a very obedient helper. It does EXACTLY what you tell it, nothing more, nothing less. So learn to give it the right instructions!" 😄</p>
+    </div>
+  </div>
+
+  <div class="fun-fact">
+    <strong>Key Term Alert!</strong> <strong>ICT</strong> = Information & Communications Technology. Think of it as the big umbrella that covers computers, internet, phones, TV, and radio — basically anything that helps us communicate or share information!
+  </div>
+</div>
+
+<!-- ==================== ICT & COMPUTERS ==================== -->
+<div id="ict" class="section">
+  <div class="section-title">📡 ICT, Computers & Types</div>
+
+  <div class="story-card">
+    <h2>🏫 What Even IS a Computer?</h2>
+    <p>Think about your classroom, Teacher Keimon. Little <strong>Shiloh</strong> walks in with some finger paintings (that's <em>INPUT</em> — raw data coming in). You look at them, understand them, and give Shiloh feedback (that's <em>PROCESSING</em>). Then you display Shiloh's work on the wall for everyone to see (that's <em>OUTPUT</em>).</p>
+    <p>A computer works the exact same way! Data goes IN → the computer PROCESSES it → Information comes OUT. You are basically a biological computer, Teacher Keimon! 😄</p>
+    <div class="highlight-box mint">
+      🖥️ <strong>Official Definition:</strong> A computer is an <em>electronic digital device</em> that stores, retrieves, and processes data — and can be programmed with instructions. It has hardware (the physical parts you can touch) and software (the invisible instructions that tell it what to do).
+    </div>
+  </div>
+
+  <div class="story-card sky">
+    <h2>🌐 ICT vs IT — What's the Difference?</h2>
+    <p>Imagine <strong>Makaila</strong> and <strong>Makaili</strong> playing together. They look similar but are different kids doing different things!</p>
+
+    <table class="compare-table">
+      <tr>
+        <th>Term</th>
+        <th>What It Means</th>
+        <th>Real Life Example</th>
+      </tr>
+      <tr>
+        <td>IT (Information Technology)</td>
+        <td>Computers + hardware + software to collect, process and store info</td>
+        <td>The computer lab at school</td>
+      </tr>
+      <tr>
+        <td>ICT (Info & Communications Technology)</td>
+        <td>IT + internet + phones + TV + radio — everything that communicates</td>
+        <td>WhatsApp + YouTube + the lab computer all working together</td>
+      </tr>
+    </table>
+
+    <p><strong>Oma Lu</strong> put it best: <em>"IT is the tools. ICT is the tools PLUS the conversations you have with those tools!"</em> 😄</p>
+  </div>
+
+  <div class="story-card lavender">
+    <h2>🏆 Computer Capabilities — What Makes It Special?</h2>
+    <div class="character-bubble">
+      <div class="character-avatar" style="background:#C77DFF;">🧒</div>
+      <div class="bubble-text">
+        <div class="bubble-name" style="color:#7b2fbe;">Shamar thinks...</div>
+        <p>"My teacher says the computer is like a SUPER STUDENT — it never gets tired, never gets hungry, and it works at lightning speed! But it can't think on its own. It needs a teacher — that's US — to tell it what to do!"</p>
+      </div>
+    </div>
+    <div class="highlight-box lavender">
+      ⚡ <strong>SPEED:</strong> A computer can do in SECONDS what would take a human YEARS<br>
+      💾 <strong>STORAGE:</strong> It remembers everything — no forgetting like we do!<br>
+      🎯 <strong>ACCURACY:</strong> If the instructions are right, it NEVER makes mistakes<br>
+      ⚠️ <strong>LIMITATION:</strong> GIGO — "Garbage In, Garbage Out!" Bad instructions = bad results!
+    </div>
+  </div>
+
+  <div class="story-card peach">
+    <h2>💻 Types of Computers — From Tiny to MASSIVE</h2>
+    <p>Think of computers like the kids in your class. You have different sizes, different abilities, different purposes! 😊</p>
+
+    <div class="computer-types-grid">
+      <div class="computer-type-card">
+        <div class="icon">🏙️</div>
+        <h4>Supercomputer</h4>
+        <p>The overachieving genius. Predicts weather, simulates nuclear reactions. Costs MILLIONS!</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">🏦</div>
+        <h4>Mainframe</h4>
+        <p>Like a whole school's admin system. Banks and governments use these big boys.</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">🖥️</div>
+        <h4>Minicomputer</h4>
+        <p>Mid-sized. Universities and engineering firms love these.</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">💻</div>
+        <h4>Microcomputer / PC</h4>
+        <p>Your everyday desktop or laptop. The classroom computer! This is what YOU use.</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">📱</div>
+        <h4>Smartphone / Tablet</h4>
+        <p>Pocket-sized computer! You use this to check on Adiaha's performances! 😄</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-card teal">
+    <h2>⌨️ Computer Peripheral Devices</h2>
+    <p>Think of the computer as little <strong>Aviana</strong> sitting at her desk. Aviana alone can't do much — she needs TOOLS! Her pencil (keyboard), her eyes on the board (monitor), her hand raising for attention (mouse)... those are all peripherals!</p>
+    <div class="highlight-box sky">
+      📥 <strong>INPUT Devices</strong> (things that send info TO the computer): Keyboard, Mouse, Scanner, Microphone, Camera<br><br>
+      📤 <strong>OUTPUT Devices</strong> (things the computer sends info OUT to): Monitor/Screen, Printer, Speakers<br><br>
+      💾 <strong>Storage Devices</strong>: Hard Drive, USB drive, CD/DVD — where info is saved!
+    </div>
+    <div class="fun-fact">
+      Storage sizes go: Bit → Byte (8 bits) → Kilobyte (KB) → Megabyte (MB) → Gigabyte (GB) → Terabyte (TB). Think of a Byte like one letter. A Terabyte is like storing every book in a giant library! 📚
+    </div>
+  </div>
+</div>
+
+<!-- ==================== GENERATIONS ==================== -->
+<div id="generations" class="section">
+  <div class="section-title">⏳ Computer Generations</div>
+
+  <div class="story-card">
+    <h2>👶→👦→🧑→👨→🧙 Growing Up!</h2>
+    <p>Teacher Keimon, you've watched children grow from babies to big kids. Well, computers grew up too — in 5 amazing "generations"! Each generation got smaller, faster, cheaper, and smarter. Just like <strong>Geron</strong> went from needing help tying his shoes to being completely independent!</p>
+  </div>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:linear-gradient(135deg,#FF6B6B,#FFB347);">🏠</div>
+      <div class="timeline-content">
+        <h3 style="color:var(--coral);">1st Generation (1946–1958) — The Giant Baby!</h3>
+        <p>Used <strong>vacuum tubes</strong> — think big glass light bulbs. These computers weighed <em>30 TONS</em> and filled 15,000 sq. feet — that's like your entire school! They generated SO much heat they needed their own air conditioning. Imagine a baby that needs an entire building just to exist! 🍼</p>
+        <div class="fun-fact">Processing speed: milliseconds (thousandths of a second). Stored data on punched cards!</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:linear-gradient(135deg,#FFD93D,#6BCB77);">📦</div>
+      <div class="timeline-content">
+        <h3 style="color:var(--mint);">2nd Generation (1959–1964) — Toddler Stage</h3>
+        <p>Replaced vacuum tubes with <strong>transistors</strong>. One transistor could do the work of 40 vacuum tubes! Computers got smaller, cheaper, faster, and used less power. Like when <strong>Lea</strong> went from crawling to walking — suddenly so much more capable! 🧒</p>
+        <div class="fun-fact">Processing speed: microseconds (millionths of a second). Used assembly language!</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:linear-gradient(135deg,#6BCB77,#4D96FF);">🔬</div>
+      <div class="timeline-content">
+        <h3 style="color:var(--sky);">3rd Generation (1964–1970) — School Age!</h3>
+        <p>Tiny <strong>Integrated Circuits (ICs)</strong> put multiple transistors on one tiny chip! Computers could run multiple programs at once. <strong>Operating Systems</strong> began here. Like when <strong>Blake</strong> started kindergarten and suddenly could multitask — eat, draw, AND listen to a story! 🎨</p>
+        <div class="fun-fact">Processing speed: nanoseconds (billionths of a second). Minicomputers emerged!</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:linear-gradient(135deg,#4D96FF,#C77DFF);">🏆</div>
+      <div class="timeline-content">
+        <h3 style="color:var(--lavender);">4th Generation (1971–1984) — Teenager!</h3>
+        <p><strong>Microprocessors</strong> put an ENTIRE computer on ONE chip! The personal computer (PC) was born. Laptops were invented in 1982. C++, Java programming languages appeared. Like <strong>Janae</strong> getting her first phone — suddenly independent and doing everything herself! 📱</p>
+        <div class="fun-fact">This is when Windows and Mac OS were born. The PERSONAL computer era began!</div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:linear-gradient(135deg,#C77DFF,#FF6B6B);">🤖</div>
+      <div class="timeline-content">
+        <h3 style="color:var(--coral);">5th Generation (1985–Now) — Adult & Beyond!</h3>
+        <p><strong>Artificial Intelligence, robots, parallel processing!</strong> Computers can now "learn" and "think" — like an AI tutor for your students! Oma Lu is amazed. Robots don't eat, don't sleep, don't strike, don't need wages... but they still can't replace the love of a teacher like you! ❤️</p>
+        <div class="fun-fact">We are HERE right now. AI like ChatGPT, robots in factories, self-driving cars — all 5th generation!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="story-card sky">
+    <h2>🃏 Key Tech Terms — Tap to Flip!</h2>
+    <p class="flip-hint">👇 Tap any card to reveal the explanation!</p>
+    <div class="flip-cards-grid">
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="card-emoji">💡</span>Vacuum Tube</div>
+          <div class="flip-card-back">Glass tube that controlled electrical flow. Used in 1st gen computers. Hot, huge, and unreliable!</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="card-emoji">⚡</span>Transistor</div>
+          <div class="flip-card-back">Tiny switch that controls electricity. One = 40 vacuum tubes! Made computers smaller & faster.</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="card-emoji">🔬</span>Integrated Circuit</div>
+          <div class="flip-card-back">Thousands of transistors on one tiny chip! Like fitting your whole class roster on a postage stamp.</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="card-emoji">🧠</span>Microprocessor</div>
+          <div class="flip-card-back">The "brain" of the computer. An entire CPU on ONE chip. Made PCs possible!</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="card-emoji">🤖</span>AI</div>
+          <div class="flip-card-back">Artificial Intelligence — teaching computers to "think" and learn from data. Like the 5th generation's superpower!</div>
+        </div>
+      </div>
+      <div class="flip-card" onclick="this.classList.toggle('flipped')">
+        <div class="flip-card-inner">
+          <div class="flip-card-front"><span class="card-emoji">🗑️</span>GIGO</div>
+          <div class="flip-card-back">"Garbage In, Garbage Out." Bad instructions = bad results. Always give computers CLEAR instructions!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SOFTWARE ==================== -->
+<div id="software" class="section">
+  <div class="section-title">💿 Computer Software</div>
+
+  <div class="story-card">
+    <h2>🎓 The Classroom Analogy</h2>
+    <p>Imagine your classroom, Teacher Keimon. The <em>desks, chairs, whiteboard, pencils</em> — those are <strong>Hardware</strong> (physical things you can touch).</p>
+    <p>But a classroom with just furniture is USELESS without <em>lesson plans, rules, activities, and the curriculum</em> — those are <strong>Software</strong> (the invisible instructions that make everything work)!</p>
+
+    <div class="highlight-box">
+      🖥️ <strong>Computer System = Hardware + Software + User</strong><br>
+      <small>(Just like School = Building + Curriculum + Students & Teachers!)</small>
+    </div>
+  </div>
+
+  <div class="story-card mint">
+    <h2>📚 Two Big Categories of Software</h2>
+
+    <div class="character-bubble">
+      <div class="character-avatar" style="background:#FFB347;">🧒</div>
+      <div class="bubble-text">
+        <div class="bubble-name" style="color:#b85c00;">Aeva explains...</div>
+        <p>"It's like in class we have two kinds of people: Teacher Keimon (who RUNS the classroom and manages everything) and the students (who actually DO the work). System Software is like Teacher Keimon. Application Software is like us students — doing specific tasks!"</p>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr>
+        <th>Type</th>
+        <th>What It Does</th>
+        <th>Examples</th>
+      </tr>
+      <tr>
+        <td>🏫 System Software</td>
+        <td>Manages the whole computer — like a classroom teacher managing everything</td>
+        <td>Operating System (Windows, macOS, Linux), Device Drivers</td>
+      </tr>
+      <tr>
+        <td>🎨 Application Software</td>
+        <td>Does specific tasks — like students doing specific activities</td>
+        <td>Microsoft Word, Excel, Chrome browser, Zoom, Games</td>
+      </tr>
+      <tr>
+        <td>🔧 Utilities & Drivers</td>
+        <td>Helper programs that keep the computer healthy</td>
+        <td>Antivirus, Disk Cleaner, Printer Driver</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="story-card sky">
+    <h2>💰 Open Source vs Proprietary Software</h2>
+    <p>Think of it like recipes, Teacher Keimon! 🍳</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;">
+      <div class="highlight-box mint">
+        <strong>🆓 Open Source Software</strong><br><br>
+        Like Oma Lu's secret family recipe that she shares with EVERYONE! Free to use, free to modify, free to share.<br><br>
+        Examples: LibreOffice, Firefox, Linux, VLC Media Player
+      </div>
+      <div class="highlight-box coral">
+        <strong>💲 Proprietary Software</strong><br><br>
+        Like a restaurant's secret sauce — you can TASTE it (use it) but you can't see the recipe (source code) without paying!<br><br>
+        Examples: Microsoft Office, Adobe Photoshop, Windows
+      </div>
+    </div>
+  </div>
+
+  <div class="story-card lavender">
+    <h2>📝 Application Software — The Student Stars!</h2>
+    <p>Application software consists of programs that tell a computer how to produce information. Think of your star students:</p>
+
+    <div class="computer-types-grid">
+      <div class="computer-type-card">
+        <div class="icon">📄</div>
+        <h4>Word Processing</h4>
+        <p>Like <strong>Logan</strong> writing beautiful essays. Microsoft Word, Google Docs.</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">📊</div>
+        <h4>Spreadsheet</h4>
+        <p>Like <strong>Geron</strong> organizing all the class marks. Microsoft Excel!</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">🗄️</div>
+        <h4>Database</h4>
+        <p>Like your organized class register. Microsoft Access, MySQL.</p>
+      </div>
+      <div class="computer-type-card">
+        <div class="icon">📽️</div>
+        <h4>Presentation</h4>
+        <p>Like <strong>Aviana</strong>'s show-and-tell. PowerPoint, Google Slides.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== OPERATING SYSTEM ==================== -->
+<div id="os" class="section">
+  <div class="section-title">🖥️ The Operating System</div>
+
+  <div class="story-card">
+    <h2>👩‍🏫 The OS is YOU, Teacher Keimon!</h2>
+    <p>Seriously! The <strong>Operating System (OS)</strong> is the software that acts as the <em>intermediary between the user and the hardware</em>. In your classroom:</p>
+    <p>🎒 The <strong>students</strong> = Application programs (Word, Chrome, games)<br>
+    🏫 The <strong>building & furniture</strong> = Hardware (computer, keyboard, monitor)<br>
+    👩‍🏫 <strong>YOU</strong> (the teacher) = the Operating System!</p>
+    <p>You manage the classroom, give students access to resources, make sure nobody fights over the crayons, keep things running smoothly... That's EXACTLY what an OS does for a computer!</p>
+    <div class="highlight-box">
+      🎯 <strong>OS Goals:</strong><br>
+      1. Execute user programs (run apps) and make solving problems easier<br>
+      2. Make the computer convenient and friendly to use<br>
+      3. Use the computer hardware efficiently
+    </div>
+  </div>
+
+  <div class="story-card mint">
+    <h2>🏗️ The Layered Structure — Floors in a School</h2>
+    <p>Computer resources are organized in <strong>layers</strong>, where each layer only interacts with the layer directly above or below it. Think of your school as a 4-story building:</p>
+
+    <div style="text-align:center; padding: 10px 0;">
+      <div style="background:var(--coral);color:white;padding:18px;border-radius:12px 12px 0 0;font-weight:800;font-size:1.1rem;">
+        👤 USER (You — 4th Floor)
+      </div>
+      <div style="background:#FF8A65;color:white;padding:18px;font-weight:700;">
+        📱 APPLICATIONS (Apps — 3rd Floor)
+      </div>
+      <div style="background:var(--sky);color:white;padding:18px;font-weight:700;">
+        🖥️ OPERATING SYSTEM (2nd Floor)
+      </div>
+      <div style="background:#1565C0;color:white;padding:18px;border-radius:0 0 12px 12px;font-weight:700;">
+        🔧 HARDWARE (Ground Floor)
+      </div>
+    </div>
+
+    <p style="margin-top:15px;">You (User) don't go directly to the basement to turn on the lights. You flip a switch (Application) which tells building management (OS) which then controls the electrical system (Hardware)!</p>
+    <div class="fun-fact">
+      <strong>Key Rule:</strong> Install new hardware? Only the OS needs updating (not your apps). Install new software? Only the OS needs to support it (not the hardware). Change the OS? BOTH apps AND hardware must be compatible!
+    </div>
+  </div>
+
+  <div class="story-card sky">
+    <h2>🎛️ The 6 Functions of an OS — Meet the Teaching Staff!</h2>
+
+    <div class="character-bubble">
+      <div class="character-avatar" style="background:#FF6B6B;">🏫</div>
+      <div class="bubble-text">
+        <div class="bubble-name" style="color:#c0392b;">Oma Lu narrates...</div>
+        <p>"Honey, running a school takes a whole STAFF, not just one person! The Operating System is the same — it has 6 big jobs, and each one is like a different teacher or staff member!"</p>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <tr>
+        <th>OS Function</th>
+        <th>School Analogy</th>
+      </tr>
+      <tr>
+        <td>1. 🔄 Process Management</td>
+        <td>The Schedule Coordinator — decides which class (program) runs when and for how long</td>
+      </tr>
+      <tr>
+        <td>2. 🧠 Memory Management</td>
+        <td>The Resource Room Teacher — tracks who has what supplies and gives them out fairly</td>
+      </tr>
+      <tr>
+        <td>3. 📁 File Management</td>
+        <td>The Librarian — organizes, creates, finds, and backs up all documents</td>
+      </tr>
+      <tr>
+        <td>4. 🖨️ Device (I/O) Management</td>
+        <td>The IT Tech — manages printers, keyboards, mice; decides who gets to use them</td>
+      </tr>
+      <tr>
+        <td>5. 🔒 Security & Protection</td>
+        <td>The Security Guard — passwords, permissions, no unauthorized access!</td>
+      </tr>
+      <tr>
+        <td>6. 🖥️ User Interface</td>
+        <td>The School Receptionist — the friendly face through which you interact with everything</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="story-card lavender">
+    <h2>💾 Memory Management Deep Dive</h2>
+    <p>Think of computer memory like your classroom's <strong>activity tables</strong>:</p>
+    <div class="highlight-box lavender">
+      🪑 <strong>RAM (Random Access Memory)</strong> = The actual table space where kids work RIGHT NOW. When class ends (computer turns off), the table is cleared. It's <em>volatile</em> — everything disappears!<br><br>
+      📚 <strong>Hard Drive Storage</strong> = The bookshelves and cabinets. Things stay there even when school is closed.<br><br>
+      🪄 <strong>Virtual Memory</strong> = When the tables are full, you use a corner of the floor as overflow space. The OS uses part of the hard drive as "extra table space" — that's virtual memory!
+    </div>
+  </div>
+
+  <div class="story-card teal">
+    <h2>📜 History of Operating Systems — The OS Grows Up!</h2>
+
+    <table class="compare-table">
+      <tr>
+        <th>Generation</th>
+        <th>What Happened</th>
+      </tr>
+      <tr>
+        <td>1940s–early 1950s</td>
+        <td>NO operating system! Programmers wired plug boards directly. Like teaching with no lesson plan at all!</td>
+      </tr>
+      <tr>
+        <td>1955–1965 (2nd Gen)</td>
+        <td>First OS created — called <strong>GMOS</strong> by General Motors for IBM. Batch processing: one job at a time.</td>
+      </tr>
+      <tr>
+        <td>1965–1980 (3rd Gen)</td>
+        <td>MULTIPROGRAMMING begins! Multiple programs running at once. Like Teacher Keimon teaching reading AND having a group doing crafts simultaneously!</td>
+      </tr>
+      <tr>
+        <td>1980–Present (4th Gen)</td>
+        <td>Windows & Mac OS born! Personal computers for everyone. The friendly, click-able interface we use today!</td>
+      </tr>
+    </table>
+
+    <div class="highlight-box">
+      🌍 <strong>Popular OS Categories Today:</strong><br>
+      🖥️ <strong>Desktop:</strong> Windows, macOS, Linux/Ubuntu<br>
+      🖧 <strong>Server:</strong> Windows Server, Linux<br>
+      📱 <strong>Mobile:</strong> Android, iOS
+    </div>
+
+    <div class="highlight-box sky">
+      💡 <strong>CLI vs GUI — Two Ways to Talk to Your Computer:</strong><br><br>
+      <strong>CLI (Command Line Interface)</strong> = Like sending written notes to a student. You TYPE commands. Advanced, fast, but no pictures. (Used by tech experts!)<br><br>
+      <strong>GUI (Graphical User Interface)</strong> = Like pointing at things on a bulletin board. You CLICK icons and menus. Friendly, visual, easy! (Windows, Mac — what you use!)
+    </div>
+  </div>
+</div>
+
+<!-- ==================== WINDOWS 10 ==================== -->
+<div id="windows" class="section">
+  <div class="section-title">🪟 Navigating Windows 10</div>
+
+  <div class="story-card">
+    <h2>🏠 Your Digital Classroom — The Desktop</h2>
+    <p>When you turn on a Windows 10 computer, you arrive at the <strong>Desktop</strong> — think of it like your physical classroom desk! It has everything you need to start working. Let's tour it together, just like you'd orient a new student on the first day of school! 🎒</p>
+  </div>
+
+  <div class="story-card mint">
+    <h2>⭐ The Start Menu — Your Master Key</h2>
+    <div class="character-bubble">
+      <div class="character-avatar" style="background:#6BCB77;">🧒</div>
+      <div class="bubble-text">
+        <div class="bubble-name" style="color:#1a7a3a;">Blake explains...</div>
+        <p>"Teacher Keimon, the Start Menu is like the school's office! If you need ANYTHING, you go there first. Click the Windows logo (⊞) at the bottom-left, or press the Windows key on the keyboard. From there you can find ANY program, shut down, or change settings!"</p>
+      </div>
+    </div>
+    <div class="highlight-box mint">
+      ⊞ <strong>How to open:</strong> Click the Start button (bottom-left ⊞) OR press the Windows key on keyboard<br><br>
+      <strong>Left side:</strong> Recently used apps + all installed programs<br>
+      <strong>Right side (Tiles):</strong> Pinned apps you use most — like your favorite supplies on your desk!<br><br>
+      🔌 <strong>Shut down/Restart:</strong> Start → Power button → choose Sleep, Shut down, or Restart
+    </div>
+  </div>
+
+  <div class="story-card sky">
+    <h2>🔍 Search — Your Teaching Assistant!</h2>
+    <p>Windows 10's search bar is like having <strong>Aeva</strong> as your personal assistant — she knows where EVERYTHING is! Just start typing in the search box (next to the Start button) and it finds:</p>
+    <div class="highlight-box sky">
+      📱 <strong>Apps</strong> — type "Word" to open Microsoft Word<br>
+      📁 <strong>Files</strong> — type part of a filename to find it<br>
+      🌐 <strong>Web</strong> — search the internet directly<br>
+      🔊 <strong>Cortana</strong> — Microsoft's voice assistant (like Siri for Windows!)
+    </div>
+  </div>
+
+  <div class="story-card lavender">
+    <h2>🗂️ Task View & Virtual Desktops</h2>
+    <div class="character-bubble">
+      <div class="character-avatar" style="background:#C77DFF;">👵</div>
+      <div class="bubble-text">
+        <div class="bubble-name" style="color:#7b2fbe;">Oma Lu marvels...</div>
+        <p>"Lord have mercy, they call it 'Task View'? Back in my day you had ONE desk and ONE pile of papers! Now you press Windows + TAB and ALL your open programs spread out nice and neat so you can find exactly what you need. And Virtual Desktops? It's like having THREE desks in one room — one for work, one for personal, one for school!"</p>
+      </div>
+    </div>
+    <div class="highlight-box lavender">
+      📋 <strong>Task View:</strong> Click the Task View button in taskbar OR press Windows + TAB<br>
+      💻 <strong>Virtual Desktops:</strong> Create separate workspaces — one for class materials, one for personal browsing!<br>
+      🪟 <strong>Snap Enhancement:</strong> Drag a window to the edge of the screen to snap it into place — work with TWO programs side by side!
+    </div>
+  </div>
+
+  <div class="story-card peach">
+    <h2>⚙️ Settings — Personalizing Your Space</h2>
+    <p>Just like you arrange YOUR classroom exactly how YOU like it, Windows 10 lets you personalize everything! Go to <strong>Start → Settings (⚙️)</strong>:</p>
+
+    <table class="compare-table">
+      <tr>
+        <th>Setting</th>
+        <th>What You Can Do</th>
+        <th>School Equivalent</th>
+      </tr>
+      <tr>
+        <td>🖥️ System → Display</td>
+        <td>Change screen resolution & text size</td>
+        <td>Adjusting the whiteboard height for your students</td>
+      </tr>
+      <tr>
+        <td>🖨️ Devices</td>
+        <td>Add printers, mice, keyboards</td>
+        <td>Connecting the classroom printer</td>
+      </tr>
+      <tr>
+        <td>🎨 Personalization</td>
+        <td>Wallpaper, colors, lock screen, themes</td>
+        <td>Decorating your classroom walls!</td>
+      </tr>
+      <tr>
+        <td>👤 Accounts</td>
+        <td>User accounts & passwords</td>
+        <td>Student name tags & class lists</td>
+      </tr>
+    </table>
+
+    <div class="fun-fact">
+      <strong>Can't see things well?</strong> Go Settings → System → Display → "Scale and Layout" → increase the percentage to make EVERYTHING bigger on screen. No more squinting! 👓
+    </div>
+  </div>
+
+  <div class="story-card teal">
+    <h2>📂 File Explorer — The School Filing Cabinet</h2>
+    <p>File Explorer is your digital filing cabinet! Right-click the Start button → Select "File Explorer" (or press Windows + E). Then click "This PC" to see all your drives:</p>
+    <div class="highlight-box sky">
+      💾 <strong>C: Drive (Local Disk C)</strong> = Your main filing cabinet — where Windows and programs live<br>
+      📁 <strong>Documents, Pictures, Downloads</strong> = Pre-made folders like labeled cabinet drawers<br>
+      🔌 <strong>USB Drive (shows as D: or E:)</strong> = A portable folder you carry with you, like a folder in your bag!
+    </div>
+    <p><strong>To add a desktop shortcut:</strong> Click Start → Find the app → Hold left mouse button → Drag to the desktop. Like taping a sticky note with your most-used tools right on your desk! 📌</p>
+  </div>
+
+  <div class="story-card">
+    <h2>🚪 Logging Out & Switching Users</h2>
+    <div class="highlight-box coral">
+      <strong>To Sign Out:</strong> Start Menu → Click your User Icon at the top → Select "Sign out"<br><br>
+      <strong>To Switch Users:</strong> Same menu → "Switch account" (your session stays open in the background!)<br><br>
+      <strong>Quick Lock Screen:</strong> Press Windows + L — locks your screen without signing out. Great when you step away briefly!
+    </div>
+  </div>
+</div>
+
+<!-- ==================== BIG QUIZ ==================== -->
+<div id="quiz" class="section">
+  <div class="quiz-container">
+    <div class="quiz-header">🎯 Keimon's Big Computer Quiz!</div>
+    <div class="quiz-subtitle">25 questions covering everything. Take your time — Adiaha believes in you! 👑</div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+    </div>
+
+    <!-- Q1: MC -->
+    <div class="q-block" id="qb1">
+      <div class="q-number">Question 1 of 25 — Multiple Choice</div>
+      <div class="q-text">Teacher Keimon walks in, collects students' drawings, looks at them, and writes comments. In computer terms, those students' drawings are the ___?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,1,'wrong')">Output — because the kids produced them</button>
+        <button class="mc-btn" onclick="answerMC(this,1,'correct')">Input — raw data going INTO the computer (teacher)</button>
+        <button class="mc-btn" onclick="answerMC(this,1,'wrong')">Processing — because it involves thinking</button>
+        <button class="mc-btn" onclick="answerMC(this,1,'wrong')">Storage — because the teacher keeps them</button>
+      </div>
+      <div class="q-feedback" id="fb1"></div>
+    </div>
+
+    <!-- Q2: TF -->
+    <div class="q-block" id="qb2">
+      <div class="q-number">Question 2 of 25 — True or False</div>
+      <div class="q-text">ICT and IT mean exactly the same thing — there is NO difference between them.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,2,false)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,2,true)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb2"></div>
+    </div>
+
+    <!-- Q3: MC -->
+    <div class="q-block" id="qb3">
+      <div class="q-number">Question 3 of 25 — Multiple Choice</div>
+      <div class="q-text">Geron just won the science fair. His trophy, lab coat, and beakers are "hardware." His knowledge, experiment plan, and notes are "software." Which statement BEST matches this computer analogy?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,3,'wrong')">Hardware = instructions, Software = physical tools</button>
+        <button class="mc-btn" onclick="answerMC(this,3,'correct')">Hardware = physical things you can touch; Software = programs and instructions you cannot touch</button>
+        <button class="mc-btn" onclick="answerMC(this,3,'wrong')">Hardware and software are the same thing</button>
+        <button class="mc-btn" onclick="answerMC(this,3,'wrong')">Software only refers to games</button>
+      </div>
+      <div class="q-feedback" id="fb3"></div>
+    </div>
+
+    <!-- Q4: MC -->
+    <div class="q-block" id="qb4">
+      <div class="q-number">Question 4 of 25 — Multiple Choice</div>
+      <div class="q-text">First generation computers used _____ and weighed about 30 tons!</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,4,'wrong')">Transistors</button>
+        <button class="mc-btn" onclick="answerMC(this,4,'wrong')">Integrated Circuits</button>
+        <button class="mc-btn" onclick="answerMC(this,4,'correct')">Vacuum Tubes</button>
+        <button class="mc-btn" onclick="answerMC(this,4,'wrong')">Microprocessors</button>
+      </div>
+      <div class="q-feedback" id="fb4"></div>
+    </div>
+
+    <!-- Q5: TF -->
+    <div class="q-block" id="qb5">
+      <div class="q-number">Question 5 of 25 — True or False</div>
+      <div class="q-text">RAM is a volatile storage device — meaning everything stored in RAM disappears when the computer is turned off.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,5,true)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,5,false)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb5"></div>
+    </div>
+
+    <!-- Q6: MC -->
+    <div class="q-block" id="qb6">
+      <div class="q-number">Question 6 of 25 — Multiple Choice</div>
+      <div class="q-text">Oma Lu shares her famous pepper pot recipe with the WHOLE community — no charge, anyone can modify it. This is like which type of software?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,6,'wrong')">Proprietary software</button>
+        <button class="mc-btn" onclick="answerMC(this,6,'wrong')">Application software</button>
+        <button class="mc-btn" onclick="answerMC(this,6,'correct')">Open source software</button>
+        <button class="mc-btn" onclick="answerMC(this,6,'wrong')">System software</button>
+      </div>
+      <div class="q-feedback" id="fb6"></div>
+    </div>
+
+    <!-- Q7: Matching -->
+    <div class="q-block" id="qb7">
+      <div class="q-number">Question 7 of 25 — Matching (Click a left item, then a right item to match)</div>
+      <div class="q-text">Match each OS function to its "classroom staff" equivalent!</div>
+      <div class="match-container">
+        <div class="match-col">
+          <h4>OS Function</h4>
+          <div class="match-item left-item" data-id="m1" data-pair="p1" onclick="handleMatch(this)">Process Management</div>
+          <div class="match-item left-item" data-id="m2" data-pair="p2" onclick="handleMatch(this)">File Management</div>
+          <div class="match-item left-item" data-id="m3" data-pair="p3" onclick="handleMatch(this)">Security & Protection</div>
+          <div class="match-item left-item" data-id="m4" data-pair="p4" onclick="handleMatch(this)">Memory Management</div>
+        </div>
+        <div class="match-col">
+          <h4>School Equivalent</h4>
+          <div class="match-item right-item" data-id="r1" data-pair="p2" onclick="handleMatch(this)">The Librarian</div>
+          <div class="match-item right-item" data-id="r2" data-pair="p3" onclick="handleMatch(this)">The Security Guard</div>
+          <div class="match-item right-item" data-id="r3" data-pair="p1" onclick="handleMatch(this)">The Schedule Coordinator</div>
+          <div class="match-item right-item" data-id="r4" data-pair="p4" onclick="handleMatch(this)">The Resource Room Teacher</div>
+        </div>
+      </div>
+      <div class="q-feedback" id="fb7"></div>
+    </div>
+
+    <!-- Q8: MC -->
+    <div class="q-block" id="qb8">
+      <div class="q-number">Question 8 of 25 — Multiple Choice</div>
+      <div class="q-text">Which computer is the LARGEST, FASTEST, and MOST EXPENSIVE — used for weather prediction and nuclear research?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,8,'wrong')">Mainframe Computer</button>
+        <button class="mc-btn" onclick="answerMC(this,8,'correct')">Supercomputer</button>
+        <button class="mc-btn" onclick="answerMC(this,8,'wrong')">Microcomputer</button>
+        <button class="mc-btn" onclick="answerMC(this,8,'wrong')">Minicomputer</button>
+      </div>
+      <div class="q-feedback" id="fb8"></div>
+    </div>
+
+    <!-- Q9: TF -->
+    <div class="q-block" id="qb9">
+      <div class="q-number">Question 9 of 25 — True or False</div>
+      <div class="q-text">A CLI (Command Line Interface) lets you interact with the computer by clicking on icons and menus — just like a modern Windows screen.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,9,false)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,9,true)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb9"></div>
+    </div>
+
+    <!-- Q10: MC -->
+    <div class="q-block" id="qb10">
+      <div class="q-number">Question 10 of 25 — Multiple Choice</div>
+      <div class="q-text">GIGO stands for ___. Little Janae typed wrong data into the class spreadsheet and got the wrong totals. This is a perfect example!</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,10,'wrong')">Graphics Input/Graphics Output</button>
+        <button class="mc-btn" onclick="answerMC(this,10,'correct')">Garbage In, Garbage Out</button>
+        <button class="mc-btn" onclick="answerMC(this,10,'wrong')">Generate Information, Get Output</button>
+        <button class="mc-btn" onclick="answerMC(this,10,'wrong')">General Input, General Output</button>
+      </div>
+      <div class="q-feedback" id="fb10"></div>
+    </div>
+
+    <!-- Q11: MC -->
+    <div class="q-block" id="qb11">
+      <div class="q-number">Question 11 of 25 — Multiple Choice</div>
+      <div class="q-text">Which keyboard shortcut opens Task View in Windows 10 to see all open windows spread out?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,11,'wrong')">Ctrl + Alt + Delete</button>
+        <button class="mc-btn" onclick="answerMC(this,11,'correct')">Windows key + TAB</button>
+        <button class="mc-btn" onclick="answerMC(this,11,'wrong')">Alt + F4</button>
+        <button class="mc-btn" onclick="answerMC(this,11,'wrong')">Windows key + D</button>
+      </div>
+      <div class="q-feedback" id="fb11"></div>
+    </div>
+
+    <!-- Q12: Dropdown fill-in -->
+    <div class="q-block" id="qb12">
+      <div class="q-number">Question 12 of 25 — Fill in the Blank</div>
+      <div class="q-text">Complete the sentence by selecting the correct word from each dropdown:</div>
+      <div style="line-height:2.5; font-size:1rem; font-weight:600;">
+        The second generation of computers replaced
+        <select class="fill-select" id="fill12a" onchange="checkFill(12)">
+          <option value="">— choose —</option>
+          <option value="wrong">integrated circuits</option>
+          <option value="correct">vacuum tubes</option>
+          <option value="wrong">microprocessors</option>
+        </select>
+        with
+        <select class="fill-select" id="fill12b" onchange="checkFill(12)">
+          <option value="">— choose —</option>
+          <option value="wrong">AI chips</option>
+          <option value="wrong">punch cards</option>
+          <option value="correct">transistors</option>
+        </select>
+        , making computers smaller and faster.
+      </div>
+      <div class="q-feedback" id="fb12"></div>
+    </div>
+
+    <!-- Q13: TF -->
+    <div class="q-block" id="qb13">
+      <div class="q-number">Question 13 of 25 — True or False</div>
+      <div class="q-text">The Operating System acts as an intermediary (go-between) connecting the user and the computer hardware.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,13,true)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,13,false)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb13"></div>
+    </div>
+
+    <!-- Q14: MC -->
+    <div class="q-block" id="qb14">
+      <div class="q-number">Question 14 of 25 — Multiple Choice</div>
+      <div class="q-text">Aeva wants to write a letter on the computer. Which TYPE of application software should she open?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,14,'wrong')">Spreadsheet software</button>
+        <button class="mc-btn" onclick="answerMC(this,14,'correct')">Word Processing software</button>
+        <button class="mc-btn" onclick="answerMC(this,14,'wrong')">Database software</button>
+        <button class="mc-btn" onclick="answerMC(this,14,'wrong')">Presentation software</button>
+      </div>
+      <div class="q-feedback" id="fb14"></div>
+    </div>
+
+    <!-- Q15: Matching -->
+    <div class="q-block" id="qb15">
+      <div class="q-number">Question 15 of 25 — Matching</div>
+      <div class="q-text">Match each computer generation to its KEY technology!</div>
+      <div class="match-container">
+        <div class="match-col">
+          <h4>Generation</h4>
+          <div class="match-item left-item" data-id="m15a" data-pair="g1" onclick="handleMatch(this)">1st Generation</div>
+          <div class="match-item left-item" data-id="m15b" data-pair="g2" onclick="handleMatch(this)">2nd Generation</div>
+          <div class="match-item left-item" data-id="m15c" data-pair="g3" onclick="handleMatch(this)">3rd Generation</div>
+          <div class="match-item left-item" data-id="m15d" data-pair="g4" onclick="handleMatch(this)">4th Generation</div>
+        </div>
+        <div class="match-col">
+          <h4>Technology</h4>
+          <div class="match-item right-item" data-id="r15a" data-pair="g3" onclick="handleMatch(this)">Integrated Circuits</div>
+          <div class="match-item right-item" data-id="r15b" data-pair="g1" onclick="handleMatch(this)">Vacuum Tubes</div>
+          <div class="match-item right-item" data-id="r15c" data-pair="g4" onclick="handleMatch(this)">Microprocessors</div>
+          <div class="match-item right-item" data-id="r15d" data-pair="g2" onclick="handleMatch(this)">Transistors</div>
+        </div>
+      </div>
+      <div class="q-feedback" id="fb15"></div>
+    </div>
+
+    <!-- Q16: TF -->
+    <div class="q-block" id="qb16">
+      <div class="q-number">Question 16 of 25 — True or False</div>
+      <div class="q-text">If you install a new printer (hardware), you need to change all your application programs to make them work with it.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,16,false)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,16,true)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb16"></div>
+    </div>
+
+    <!-- Q17: MC -->
+    <div class="q-block" id="qb17">
+      <div class="q-number">Question 17 of 25 — Multiple Choice</div>
+      <div class="q-text">Shiloh needs to organize the class marks in rows and columns with formulas and calculations. Which software is BEST?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,17,'wrong')">Word processor (like Microsoft Word)</button>
+        <button class="mc-btn" onclick="answerMC(this,17,'correct')">Spreadsheet software (like Microsoft Excel)</button>
+        <button class="mc-btn" onclick="answerMC(this,17,'wrong')">Presentation software (like PowerPoint)</button>
+        <button class="mc-btn" onclick="answerMC(this,17,'wrong')">Browser software (like Chrome)</button>
+      </div>
+      <div class="q-feedback" id="fb17"></div>
+    </div>
+
+    <!-- Q18: MC -->
+    <div class="q-block" id="qb18">
+      <div class="q-number">Question 18 of 25 — Multiple Choice</div>
+      <div class="q-text">Blake presses Windows + L on the keyboard. What happens?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,18,'wrong')">The computer shuts down completely</button>
+        <button class="mc-btn" onclick="answerMC(this,18,'wrong')">File Explorer opens</button>
+        <button class="mc-btn" onclick="answerMC(this,18,'correct')">The screen locks (lock screen appears) without signing out</button>
+        <button class="mc-btn" onclick="answerMC(this,18,'wrong')">A new window opens</button>
+      </div>
+      <div class="q-feedback" id="fb18"></div>
+    </div>
+
+    <!-- Q19: TF -->
+    <div class="q-block" id="qb19">
+      <div class="q-number">Question 19 of 25 — True or False</div>
+      <div class="q-text">A supercomputer is typically the fastest, most powerful, and most expensive type of computer.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,19,true)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,19,false)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb19"></div>
+    </div>
+
+    <!-- Q20: Dropdown fill-in -->
+    <div class="q-block" id="qb20">
+      <div class="q-number">Question 20 of 25 — Fill in the Blank</div>
+      <div class="q-text">Select the correct words to complete the sentence:</div>
+      <div style="line-height:2.8; font-size:1rem; font-weight:600;">
+        A <select class="fill-select" id="fill20a" onchange="checkFill20()">
+          <option value="">— choose —</option>
+          <option value="wrong">spreadsheet</option>
+          <option value="correct">GUI</option>
+          <option value="wrong">CLI</option>
+        </select>
+        (Graphical User Interface) lets you interact using
+        <select class="fill-select" id="fill20b" onchange="checkFill20()">
+          <option value="">— choose —</option>
+          <option value="wrong">typed commands only</option>
+          <option value="correct">menus, icons, and visual images</option>
+          <option value="wrong">punch cards</option>
+        </select>.
+      </div>
+      <div class="q-feedback" id="fb20"></div>
+    </div>
+
+    <!-- Q21: MC -->
+    <div class="q-block" id="qb21">
+      <div class="q-number">Question 21 of 25 — Multiple Choice</div>
+      <div class="q-text">Oma Lu wants to access advanced tools like Task Manager and Power Options quickly in Windows 10. What's the fastest method?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,21,'wrong')">Click the taskbar clock</button>
+        <button class="mc-btn" onclick="answerMC(this,21,'correct')">Right-click the Start button to get the Quick Access Menu (or press Windows + X)</button>
+        <button class="mc-btn" onclick="answerMC(this,21,'wrong')">Open File Explorer</button>
+        <button class="mc-btn" onclick="answerMC(this,21,'wrong')">Press Ctrl + Z</button>
+      </div>
+      <div class="q-feedback" id="fb21"></div>
+    </div>
+
+    <!-- Q22: TF -->
+    <div class="q-block" id="qb22">
+      <div class="q-number">Question 22 of 25 — True or False</div>
+      <div class="q-text">Virtual memory allows a computer to use part of the hard disk as extra RAM when the actual RAM is full.</div>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="answerTF(this,22,true)">✅ TRUE</button>
+        <button class="tf-btn false-btn" onclick="answerTF(this,22,false)">❌ FALSE</button>
+      </div>
+      <div class="q-feedback" id="fb22"></div>
+    </div>
+
+    <!-- Q23: MC -->
+    <div class="q-block" id="qb23">
+      <div class="q-number">Question 23 of 25 — Multiple Choice</div>
+      <div class="q-text">Logan wants to add a shortcut for Microsoft Word to her Windows 10 desktop. What is the CORRECT way to do this?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,23,'wrong')">Restart the computer</button>
+        <button class="mc-btn" onclick="answerMC(this,23,'correct')">Click Start → Find Word → Hold left mouse button → Drag to the desktop</button>
+        <button class="mc-btn" onclick="answerMC(this,23,'wrong')">Open File Explorer and press Delete</button>
+        <button class="mc-btn" onclick="answerMC(this,23,'wrong')">Press Windows + Tab</button>
+      </div>
+      <div class="q-feedback" id="fb23"></div>
+    </div>
+
+    <!-- Q24: MC -->
+    <div class="q-block" id="qb24">
+      <div class="q-number">Question 24 of 25 — Multiple Choice</div>
+      <div class="q-text">Which of these is an INPUT device?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,24,'wrong')">Monitor (screen)</button>
+        <button class="mc-btn" onclick="answerMC(this,24,'wrong')">Printer</button>
+        <button class="mc-btn" onclick="answerMC(this,24,'correct')">Keyboard</button>
+        <button class="mc-btn" onclick="answerMC(this,24,'wrong')">Speakers</button>
+      </div>
+      <div class="q-feedback" id="fb24"></div>
+    </div>
+
+    <!-- Q25: MC -->
+    <div class="q-block" id="qb25">
+      <div class="q-number">Question 25 of 25 — Multiple Choice</div>
+      <div class="q-text">Teacher Keimon wants to personalize her Windows 10 lock screen with a photo of Adiaha's Calypso Monarch performance! Where does she go?</div>
+      <div class="mc-options">
+        <button class="mc-btn" onclick="answerMC(this,25,'wrong')">Start → File Explorer → Lock Screen</button>
+        <button class="mc-btn" onclick="answerMC(this,25,'correct')">Start → Settings → Personalization → Lock Screen</button>
+        <button class="mc-btn" onclick="answerMC(this,25,'wrong')">Right-click desktop → Screen Protector</button>
+        <button class="mc-btn" onclick="answerMC(this,25,'wrong')">Control Panel → Users → Photo</button>
+      </div>
+      <div class="q-feedback" id="fb25"></div>
+    </div>
+
+    <button class="quiz-submit-btn" onclick="submitQuiz()">🎉 See My Results!</button>
+  </div>
+
+  <div class="score-board" id="scoreBoard">
+    <div style="font-size:3rem;">🎊</div>
+    <h2>Quiz Complete!</h2>
+    <div class="score-num" id="scoreNum">--</div>
+    <div style="font-size:1rem; opacity:0.8;">out of 25</div>
+    <div class="score-msg" id="scoreMsg">--</div>
+    <br>
+    <button class="retry-btn" onclick="retryQuiz()">🔄 Try Again!</button>
+  </div>
+</div>
+
+<script>
+// ===== NAVIGATION =====
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ===== QUIZ STATE =====
+let answers = {};
+let matchState = { selectedLeft: null, selectedRight: null };
+let matchScores = {};
+
+// ===== MULTIPLE CHOICE =====
+function answerMC(btn, qNum, result) {
+  if(answers[qNum] !== undefined) return;
+  const block = document.getElementById('qb'+qNum);
+  const fb = document.getElementById('fb'+qNum);
+  const btns = block.querySelectorAll('.mc-btn');
+  btns.forEach(b => b.disabled = true);
+
+  if(result === 'correct') {
+    btn.classList.add('selected-correct');
+    answers[qNum] = true;
+    fb.className = 'q-feedback correct';
+    fb.innerHTML = getFeedback(qNum, true);
+    block.classList.add('answered','correct');
+  } else {
+    btn.classList.add('selected-wrong');
+    answers[qNum] = false;
+    btns.forEach(b => {
+      if(b.getAttribute('onclick').includes("'correct'")) b.classList.add('show-correct');
+    });
+    fb.className = 'q-feedback incorrect';
+    fb.innerHTML = getFeedback(qNum, false);
+    block.classList.add('answered','incorrect');
+  }
+  updateProgress();
+}
+
+// ===== TRUE/FALSE =====
+function answerTF(btn, qNum, isCorrect) {
+  if(answers[qNum] !== undefined) return;
+  const block = document.getElementById('qb'+qNum);
+  const fb = document.getElementById('fb'+qNum);
+  block.querySelectorAll('.tf-btn').forEach(b => b.disabled = true);
+
+  if(isCorrect) {
+    btn.classList.add('selected-correct');
+    answers[qNum] = true;
+    fb.className = 'q-feedback correct';
+    fb.innerHTML = getFeedback(qNum, true);
+    block.classList.add('answered','correct');
+  } else {
+    btn.classList.add('selected-wrong');
+    answers[qNum] = false;
+    fb.className = 'q-feedback incorrect';
+    fb.innerHTML = getFeedback(qNum, false);
+    block.classList.add('answered','incorrect');
+  }
+  updateProgress();
+}
+
+// ===== FILL IN =====
+function checkFill(qNum) {
+  const a = document.getElementById('fill12a').value;
+  const b = document.getElementById('fill12b').value;
+  if(!a || !b) return;
+  if(answers[qNum] !== undefined) return;
+
+  const fa = document.getElementById('fill12a');
+  const fb12 = document.getElementById('fill12b');
+  const feedb = document.getElementById('fb'+qNum);
+  const block = document.getElementById('qb'+qNum);
+
+  if(a === 'correct' && b === 'correct') {
+    answers[qNum] = true;
+    fa.className = 'fill-select correct';
+    fb12.className = 'fill-select correct';
+    feedb.className = 'q-feedback correct';
+    feedb.innerHTML = getFeedback(qNum, true);
+    block.classList.add('answered','correct');
+  } else {
+    answers[qNum] = false;
+    fa.className = 'fill-select incorrect';
+    fb12.className = 'fill-select incorrect';
+    feedb.className = 'q-feedback incorrect';
+    feedb.innerHTML = getFeedback(qNum, false);
+    block.classList.add('answered','incorrect');
+  }
+  fa.disabled = true; fb12.disabled = true;
+  updateProgress();
+}
+
+function checkFill20() {
+  const a = document.getElementById('fill20a').value;
+  const b = document.getElementById('fill20b').value;
+  if(!a || !b) return;
+  if(answers[20] !== undefined) return;
+
+  const fa = document.getElementById('fill20a');
+  const fb20 = document.getElementById('fill20b');
+  const feedb = document.getElementById('fb20');
+  const block = document.getElementById('qb20');
+
+  if(a === 'correct' && b === 'correct') {
+    answers[20] = true;
+    fa.className = 'fill-select correct';
+    fb20.className = 'fill-select correct';
+    feedb.className = 'q-feedback correct';
+    feedb.innerHTML = getFeedback(20, true);
+    block.classList.add('answered','correct');
+  } else {
+    answers[20] = false;
+    fa.className = 'fill-select incorrect';
+    fb20.className = 'fill-select incorrect';
+    feedb.className = 'q-feedback incorrect';
+    feedb.innerHTML = getFeedback(20, false);
+    block.classList.add('answered','incorrect');
+  }
+  fa.disabled = true; fb20.disabled = true;
+  updateProgress();
+}
+
+// ===== MATCHING =====
+let matchGroups = {};
+
+function handleMatch(item) {
+  const isLeft = item.classList.contains('left-item');
+  const isRight = item.classList.contains('right-item');
+  if(item.classList.contains('matched')) return;
+
+  // Find which question this belongs to
+  // Determine group by checking all left/right items proximity
+  const qBlock = item.closest('.q-block');
+  const qId = qBlock.id.replace('qb','q');
+
+  if(!matchGroups[qId]) matchGroups[qId] = {left: null, right: null, count: 0, total: qBlock.querySelectorAll('.left-item').length};
+
+  const group = matchGroups[qId];
+
+  if(isLeft) {
+    if(group.left) group.left.classList.remove('selected-left');
+    group.left = item;
+    item.classList.add('selected-left');
+  } else {
+    group.right = item;
+  }
+
+  if(group.left && group.right) {
+    const leftPair = group.left.dataset.pair;
+    const rightPair = group.right.dataset.pair;
+
+    if(leftPair === rightPair) {
+      group.left.classList.remove('selected-left');
+      group.left.classList.add('matched');
+      group.right.classList.add('matched');
+      group.count++;
+    } else {
+      group.left.classList.remove('selected-left');
+      group.left.classList.add('wrong');
+      group.right.classList.add('wrong');
+      setTimeout(() => {
+        group.left.classList.remove('wrong');
+        group.right.classList.remove('wrong');
+      }, 600);
+    }
+    group.left = null;
+    group.right = null;
+
+    if(group.count === group.total) {
+      const qNum = parseInt(qBlock.id.replace('qb',''));
+      answers[qNum] = true;
+      const fb = document.getElementById('fb'+qNum);
+      fb.className = 'q-feedback correct';
+      fb.innerHTML = getFeedback(qNum, true);
+      qBlock.classList.add('answered','correct');
+      updateProgress();
+    }
+  }
+}
+
+// ===== FEEDBACK MESSAGES =====
+function getFeedback(q, correct) {
+  const msgs = {
+    1: [
+      "🌟 Yes! The drawings are INPUT — raw data going INTO the 'computer' (teacher). Teacher Keimon processes them and writes OUTPUT (comments)!",
+      "🔄 Not quite! The drawings are INPUT — they're the raw data. Remember: IN → PROCESS → OUT!"
+    ],
+    2: [
+      "🌈 Correct — FALSE! IT focuses on hardware/software for storing info. ICT is broader — IT PLUS phones, internet, TV, radio. Makaila ≠ Makaili! 😄",
+      "Hmm! This is FALSE. IT and ICT are related but different. ICT is the bigger umbrella that includes IT plus all communication technologies!"
+    ],
+    3: [
+      "💪 Perfect! Hardware = physical things (desk, trophy). Software = invisible knowledge & instructions. You've got it!",
+      "Try again! Remember — Hardware is what you can TOUCH. Software is what you CANNOT touch (instructions, programs)."
+    ],
+    4: [
+      "🔥 Correct! First gen computers used vacuum tubes — huge glass bulbs that made them weigh 30 TONS and fill entire buildings!",
+      "Not this time! First gen used VACUUM TUBES. Second gen upgraded to transistors. Don't mix them up!"
+    ],
+    5: [
+      "💡 Absolutely TRUE! RAM is volatile — like your classroom's whiteboard. Everything disappears when you erase (turn off) it. Permanent storage (hard drive) is the textbook — always there!",
+      "This IS true! RAM is volatile. Always save your work to the hard drive, not just RAM!"
+    ],
+    6: [
+      "🍳 Perfect! Open Source = Oma Lu's shared recipe. Free to use, modify, and share with everyone!",
+      "Not quite! Oma Lu sharing for FREE = Open Source. If she charged and kept the recipe secret, THAT would be Proprietary!"
+    ],
+    7: [
+      "🎉 All matched! Process Management = Schedule Coordinator. File Management = Librarian. Security = Guard. Memory = Resource Teacher. Brilliant!",
+      "Keep trying! Match each OS function to its classroom equivalent."
+    ],
+    8: [
+      "🏆 Supercomputers win! Fastest, most powerful, most expensive — used for weather prediction, nuclear research. Cost MILLIONS!",
+      "Close, but it's the SUPERCOMPUTER — the champion of all computers!"
+    ],
+    9: [
+      "✅ FALSE! CLI (Command Line) uses TYPED commands — no clicking, no icons. GUI (Graphical) is what uses icons & menus. Windows is a GUI!",
+      "This is FALSE! CLI = type commands. GUI = click icons. Windows is a GUI — that's why it's friendly for us!"
+    ],
+    10: [
+      "🗑️ Garbage In, Garbage Out! If Janae enters wrong marks, she gets wrong totals. The computer is only as accurate as its INPUT!",
+      "GIGO = Garbage In, Garbage Out. Always check your data before entering it!"
+    ],
+    11: [
+      "🖥️ Windows + TAB! This spreads all open windows out so you can see and click on any of them. Great for organization!",
+      "The shortcut is Windows key + TAB. Ctrl+Alt+Delete opens a security screen, and Alt+F4 closes a window."
+    ],
+    12: [
+      "🏆 Perfect! 2nd generation replaced vacuum tubes with transistors — smaller, faster, more efficient!",
+      "2nd gen: Vacuum Tubes OUT, Transistors IN. Transistors were faster, smaller, cooler, and cheaper!"
+    ],
+    13: [
+      "👩‍🏫 TRUE! The OS is literally the middle-person between YOU (user) and the computer hardware — just like you between your students and the school resources!",
+      "This IS true! The OS sits between user and hardware, managing everything."
+    ],
+    14: [
+      "✍️ Word Processing! Microsoft Word, Google Docs — perfect for writing letters, reports, and documents. Aeva's letter will look beautiful!",
+      "For writing letters: Word Processing software (like Microsoft Word). Spreadsheets are for numbers!"
+    ],
+    15: [
+      "📚 Perfect match! 1st=Vacuum Tubes, 2nd=Transistors, 3rd=Integrated Circuits, 4th=Microprocessors. Each generation got smaller and smarter!",
+      "Review the generations! 1st: Vacuum Tubes → 2nd: Transistors → 3rd: IC Chips → 4th: Microprocessors"
+    ],
+    16: [
+      "❌ FALSE! When you add new hardware, you only need to update the OS (with a device driver). Your application programs don't need changing!",
+      "This is FALSE! New hardware → update the OS/install drivers. No need to change your Word or Excel!"
+    ],
+    17: [
+      "📊 Excel/Spreadsheet! Rows, columns, formulas, calculations — Shiloh needs a spreadsheet. Geron would agree! Word is for writing, not calculating.",
+      "For marks and calculations: Spreadsheet software (Excel)! Word processes TEXT, Excel processes NUMBERS."
+    ],
+    18: [
+      "🔒 Windows + L = Lock Screen! The screen locks and you need your password to get back in, but everything stays open. Perfect for stepping away briefly!",
+      "Windows + L locks the screen. Nothing shuts down — it's just a quick lock. Very useful!"
+    ],
+    19: [
+      "🏆 TRUE! Supercomputers are the champions — fastest (trillions of operations/second), most powerful, most expensive (millions of dollars!), and used for massive calculations.",
+      "TRUE — Supercomputers are the top tier. Most powerful, fastest, and most expensive of all computer classes."
+    ],
+    20: [
+      "🖥️ GUI uses menus, icons, and visual images. That's Windows! You click and point instead of typing commands.",
+      "GUI = Graphical User Interface = icons + menus + clicking. CLI uses TYPED commands. Windows is a GUI!"
+    ],
+    21: [
+      "⚡ Right-click Start = Quick Access Menu! Or press Windows + X. Instant access to Task Manager, Power Options, Device Manager, and more!",
+      "Right-click the Start button (or Windows + X) = Quick Access Menu with all advanced tools!"
+    ],
+    22: [
+      "🧠 TRUE! Virtual memory is like overflow tables — when RAM (your main tables) is full, the OS borrows space from the hard drive. Slower than real RAM but it works!",
+      "TRUE! Virtual memory = using hard drive space as extra RAM when actual RAM is full. Clever, right?"
+    ],
+    23: [
+      "📌 Drag and drop! Start → Find the app → Hold left mouse button → Drag to desktop. Like placing a sticky note on your actual desk!",
+      "To add a shortcut: Start → Find app → Hold left click → Drag to desktop. Simple!"
+    ],
+    24: [
+      "⌨️ Keyboard is INPUT! You type information INTO the computer. Monitor, printer, and speakers are OUTPUT — they display or produce info going OUT.",
+      "Keyboard is INPUT (sends data to computer). Monitor/Printer/Speakers are OUTPUT (receive data from computer)."
+    ],
+    25: [
+      "🔐 Start → Settings → Personalization → Lock Screen! That's where you can set Adiaha's photo as your lock screen. Show off that Calypso Queen! 👑",
+      "Settings → Personalization → Lock Screen is where you customize your lock screen background!"
+    ]
+  };
+  return msgs[q] ? (correct ? msgs[q][0] : msgs[q][1]) : (correct ? '✅ Correct!' : '❌ Not quite, review that section!');
+}
+
+// ===== PROGRESS BAR =====
+function updateProgress() {
+  const answered = Object.keys(answers).length;
+  const pct = (answered / 25) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+}
+
+// ===== SUBMIT =====
+function submitQuiz() {
+  let score = Object.values(answers).filter(v => v === true).length;
+  const total = 25;
+
+  document.getElementById('scoreNum').textContent = score;
+
+  let msg = '';
+  let emoji = '';
+  if(score >= 23) { msg = "Outstanding, Teacher Keimon! Adiaha is SO proud! You're a computer QUEEN! 👑"; emoji = "🏆"; }
+  else if(score >= 18) { msg = "Excellent work! Oma Lu is doing her praise dance! You know your stuff! 🎉"; emoji = "🌟"; }
+  else if(score >= 13) { msg = "Good job! Shamar says 'You're almost there, Teacher Keimon!' Review a few sections and try again! 😊"; emoji = "💪"; }
+  else if(score >= 8) { msg = "Keep going, brave learner! Aviana believes in you! Review the material and try again! 📚"; emoji = "🌈"; }
+  else { msg = "It's okay! Every expert was once a beginner. Review the notes with Blake and Logan and try again! ❤️"; emoji = "💛"; }
+
+  document.getElementById('scoreMsg').textContent = emoji + ' ' + msg;
+  document.getElementById('scoreBoard').style.display = 'block';
+  document.getElementById('scoreBoard').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// ===== RETRY =====
+function retryQuiz() {
+  answers = {};
+  matchGroups = {};
+  updateProgress();
+
+  document.querySelectorAll('.q-block').forEach(b => {
+    b.className = 'q-block';
+  });
+  document.querySelectorAll('.mc-btn').forEach(b => {
+    b.className = 'mc-btn';
+    b.disabled = false;
+  });
+  document.querySelectorAll('.tf-btn').forEach(b => {
+    b.className = b.classList.contains('true-btn') ? 'tf-btn true-btn' : 'tf-btn false-btn';
+    b.disabled = false;
+  });
+  document.querySelectorAll('.q-feedback').forEach(f => {
+    f.className = 'q-feedback';
+    f.innerHTML = '';
+  });
+  document.querySelectorAll('.match-item').forEach(m => {
+    m.className = m.classList.contains('left-item') ? 'match-item left-item' : 'match-item right-item';
+  });
+  document.querySelectorAll('.fill-select').forEach(s => {
+    s.value = '';
+    s.className = 'fill-select';
+    s.disabled = false;
+  });
+
+  document.getElementById('scoreBoard').style.display = 'none';
+  document.querySelector('.quiz-container').scrollIntoView({behavior:'smooth', block:'start'});
+}
+</script>
+</body>
+</html>
